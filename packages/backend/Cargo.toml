@@ -11,6 +11,7 @@ arc-swap = "1.6"
 axum = "0.6"
 clap = "4"
 dotenv = "0.15"
+sea-orm = { version = "0.12", features = ["sqlx-postgres", "runtime-tokio-rustls", "macros"] }
 serde = { version = "1", features = ["derive"] }
 serde_yaml = "0.9"
 config = "0.13"
@@ -21,3 +22,5 @@ tracing = { version = "0.1", features = ["log"] }
 tracing-log = { version = "0.2" }
 tracing-subscriber = { version = "0.3", features = ["env-filter", "registry"] }
 
+# Local dependencies
+migration = { path = "../../migration" }

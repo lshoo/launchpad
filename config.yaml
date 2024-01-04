@@ -1,6 +1,6 @@
 
 database:
-  url: "postgresql://postgres:postgres@postgres:5432/postgres"
+  url: "postgresql://postgres:postgres@127.0.0.1:5432/launchpad"
 
 logging:
   log_level: "debug"
