@@ -1,0 +1,15 @@
+[package]
+name = "domain"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "domain"
+path = "src/lib.rs"
+
+[dependencies]
+chrono = "0.4"
+sea-orm = "0.12"
+serde = { version = "1", features = ["derive"] }

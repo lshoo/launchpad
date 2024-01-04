@@ -44,7 +44,7 @@ impl MigrationTrait for Migration {
                     .col(ColumnDef::new(Assets::AssetId).string().not_null())
                     .col(ColumnDef::new(Assets::Tick).string().not_null())
                     .col(ColumnDef::new(Assets::Name).string().not_null())
-                    .col(ColumnDef::new(Assets::TotalSupply).string().not_null())
+                    .col(ColumnDef::new(Assets::TotalSupply).big_integer().not_null())
                     .col(ColumnDef::new(Assets::Data).string())
                     .col(ColumnDef::new(Assets::CreatedAt).integer().not_null())
                     .to_owned(),
