@@ -1,5 +1,5 @@
 use clap::{Arg, Command};
-use fair_main::commands;
+use fair_main::{commands, setting::Setting};
 
 fn main() -> anyhow::Result<()> {
     dotenv::dotenv()?;
@@ -19,8 +19,9 @@ fn main() -> anyhow::Result<()> {
     command = commands::configure(command);
 
     let matches = command.get_matches();
-
-    commands::handle(&matches)?;
+    
+    let setting = Setting {};
+    commands::handle(&matches, &setting)?;
 
     Ok(())
 }
