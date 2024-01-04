@@ -1,8 +1,11 @@
-use std::net::{IpAddr, Ipv4Addr, SocketAddr};
+use std::{
+    net::{IpAddr, Ipv4Addr, SocketAddr},
+    sync::Arc,
+};
 
 use clap::{value_parser, Arg, ArgMatches, Command};
 
-use crate::{api, setting::Settings};
+use crate::{api, setting::Settings, state::ApplicationState};
 
 static SERVE_NAME: &str = "serve";
 static PORT_NAME: &str = "port";
@@ -29,20 +32,23 @@ pub fn handle(matches: &ArgMatches, setting: &Settings) -> anyhow::Result<()> {
 
         start_server(port, setting)?;
 
-        println!("TBD: Server started on port {}", port);
+        tracing::info!("Http Server started on port {}", port);
     }
 
     Ok(())
 }
 
-fn start_server(port: u16, _setting: &Settings) -> anyhow::Result<()> {
+fn start_server(port: u16, settings: &Settings) -> anyhow::Result<()> {
     tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()
         .unwrap()
         .block_on(async move {
+            let state = Arc::new(ApplicationState::new(settings)?);
+
             let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), port);
-            let routes = api::configure();
+
+            let routes = api::configure(state);
 
             axum::Server::bind(&addr)
                 .serve(routes.into_make_service())

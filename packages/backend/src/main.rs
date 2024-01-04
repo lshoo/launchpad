@@ -1,8 +1,8 @@
-use clap::{Arg, Command};
-use launchpad::{
+use backend::{
     commands,
     setting::{Settings, CONFIG_FILE_NAME, CONFIG_NAME, ENV_PREFIX},
 };
+use clap::{Arg, Command};
 use tracing::{level_filters::LevelFilter, Level};
 use tracing_subscriber::{layer::SubscriberExt, Registry};
 
@@ -32,6 +32,8 @@ fn main() -> anyhow::Result<()> {
 
     let settings = Settings::new(config_location, ENV_PREFIX)?;
 
+    commands::handle(&matches, &settings)?;
+
     let subscriber = Registry::default()
         .with(LevelFilter::from_level(Level::DEBUG))
         .with(tracing_subscriber::fmt::Layer::default().with_writer(std::io::stdout));
@@ -50,8 +52,6 @@ fn main() -> anyhow::Result<()> {
         "logging level: {:?}",
         settings.logging.log_level.unwrap_or("info".to_string())
     );
-
-    // commands::handle(&matches, &settings)?;
 
     Ok(())
 }

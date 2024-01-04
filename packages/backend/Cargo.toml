@@ -1,5 +1,5 @@
 [package]
-name = "launchpad"
+name = "backend"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,6 +7,7 @@ edition = "2021"
 
 [dependencies]
 anyhow = "1"
+arc-swap = "1.6"
 axum = "0.6"
 clap = "4"
 dotenv = "0.15"
@@ -19,3 +20,4 @@ tower-http = { version = "0.5", features = ["trace"] }
 tracing = { version = "0.1", features = ["log"] }
 tracing-log = { version = "0.2" }
 tracing-subscriber = { version = "0.3", features = ["env-filter", "registry"] }
+

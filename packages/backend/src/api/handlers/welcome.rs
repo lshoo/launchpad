@@ -1,5 +1,18 @@
-use axum::http::StatusCode;
+use std::sync::Arc;
 
-pub async fn welcome() -> Result<String, StatusCode> {
-    Ok("\nWelcome\n".to_string())
+use axum::{extract::State, http::StatusCode};
+
+use crate::state::ApplicationState;
+
+pub async fn welcome(State(state): State<Arc<ApplicationState>>) -> Result<String, StatusCode> {
+    Ok(format!(
+        "\nWelcome to Launchpad platform using config: {}\n\n",
+        state
+            .settings
+            .load()
+            .config
+            .location
+            .clone()
+            .unwrap_or("".to_string())
+    ))
 }
