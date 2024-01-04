@@ -1,9 +1,8 @@
-use std::net::{SocketAddr, IpAddr, Ipv4Addr};
+use std::net::{IpAddr, Ipv4Addr, SocketAddr};
 
-use axum::Router;
 use clap::{value_parser, Arg, ArgMatches, Command};
 
-use crate::setting::Setting;
+use crate::{api, setting::Settings};
 
 static SERVE_NAME: &str = "serve";
 static PORT_NAME: &str = "port";
@@ -24,7 +23,7 @@ pub fn configure() -> Command {
         )
 }
 
-pub fn handle(matches: &ArgMatches, setting: &Setting) -> anyhow::Result<()> {
+pub fn handle(matches: &ArgMatches, setting: &Settings) -> anyhow::Result<()> {
     if let Some(matches) = matches.subcommand_matches(SERVE_NAME) {
         let port = *matches.get_one(PORT_NAME).unwrap_or(&PORT_DEFAULT_VALUE);
 
@@ -36,14 +35,14 @@ pub fn handle(matches: &ArgMatches, setting: &Setting) -> anyhow::Result<()> {
     Ok(())
 }
 
-fn start_server(port: u16, _setting: &Setting) -> anyhow::Result<()> {
+fn start_server(port: u16, _setting: &Settings) -> anyhow::Result<()> {
     tokio::runtime::Builder::new_multi_thread()
         .enable_all()
         .build()
         .unwrap()
         .block_on(async move {
             let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), port);
-            let routes = Router::new();
+            let routes = api::configure();
 
             axum::Server::bind(&addr)
                 .serve(routes.into_make_service())

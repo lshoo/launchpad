@@ -1,0 +1,6 @@
+
+database:
+  url: "postgresql://postgres:postgres@postgres:5432/postgres"
+
+logging:
+  log_level: "debug"

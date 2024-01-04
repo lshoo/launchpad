@@ -3,7 +3,7 @@ mod welcome;
 
 use clap::{ArgMatches, Command};
 
-use crate::setting::Setting;
+use crate::setting::Settings;
 
 pub fn configure(command: Command) -> Command {
     command
@@ -11,7 +11,7 @@ pub fn configure(command: Command) -> Command {
         .subcommand(serve::configure())
 }
 
-pub fn handle(matches: &ArgMatches, setting: &Setting) -> anyhow::Result<()> {
+pub fn handle(matches: &ArgMatches, setting: &Settings) -> anyhow::Result<()> {
     welcome::handle(matches)?;
     serve::handle(matches, setting)?;
 
