@@ -1,8 +1,10 @@
-
 use clap::{Arg, Command};
+use fair_main::commands;
 
-fn main() {
-    let command = Command::new("Fair launchpad platform")
+fn main() -> anyhow::Result<()> {
+    dotenv::dotenv()?;
+
+    let mut command = Command::new("Fair launchpad platform")
         .version("1.0")
         .author("lshoo <lshoo36@gmail.com>")
         .about("A fair launchpad platform for Digital Assets")
@@ -14,5 +16,11 @@ fn main() {
                 .default_value("config.yaml"),
         );
 
-    let _matches = command.get_matches();
+    command = commands::configure(command);
+
+    let matches = command.get_matches();
+
+    commands::handle(&matches)?;
+
+    Ok(())
 }
