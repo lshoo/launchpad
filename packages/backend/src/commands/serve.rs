@@ -5,7 +5,7 @@ use std::{
 
 use clap::{value_parser, Arg, ArgMatches, Command};
 
-use crate::{api, setting::Settings, state::ApplicationState};
+use crate::{api, get_conn, setting::Settings, state::ApplicationState};
 
 static SERVE_NAME: &str = "serve";
 static PORT_NAME: &str = "port";
@@ -44,7 +44,8 @@ fn start_server(port: u16, settings: &Settings) -> anyhow::Result<()> {
         .build()
         .unwrap()
         .block_on(async move {
-            let state = Arc::new(ApplicationState::new(settings)?);
+            let db_conn = get_conn(settings).await?;
+            let state = Arc::new(ApplicationState::new(settings, db_conn)?);
 
             let addr = SocketAddr::new(IpAddr::V4(Ipv4Addr::new(0, 0, 0, 0)), port);
 

@@ -4,3 +4,6 @@ database:
 
 logging:
   log_level: "debug"
+
+token_secret: "2024-01-01T00:00:00Z"
+token_expiration: 3600

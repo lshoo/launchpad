@@ -10,6 +10,7 @@ name = "domain"
 path = "src/lib.rs"
 
 [dependencies]
+anyhow = "1"
 chrono = "0.4"
 sea-orm = "0.12"
 serde = { version = "1", features = ["derive"] }

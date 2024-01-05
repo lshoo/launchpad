@@ -1,10 +1,7 @@
 use clap::Arg;
 use sea_orm::{ActiveModelTrait, ColumnTrait, EntityTrait, QueryFilter, Set};
 
-use crate::{
-    commands::{encrypt_password, get_conn},
-    setting::Settings,
-};
+use crate::{encrypt_password, get_conn, setting::Settings};
 
 pub(crate) fn configure() -> clap::Command {
     clap::Command::new("createadmin")

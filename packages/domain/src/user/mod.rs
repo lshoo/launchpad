@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 pub struct Model {
     #[sea_orm(primary_key)]
     #[serde(skip_deserializing)]
-    pub id: u32,
+    pub id: i32,
     pub username: String,
     pub password: String,
     pub created_at: NaiveDateTime,
@@ -18,3 +18,15 @@ impl ActiveModelBehavior for ActiveModel {}
 
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {}
+
+pub async fn find_by_username(
+    db: &DatabaseConnection,
+    username: &str,
+) -> anyhow::Result<Option<Model>> {
+    let users = Entity::find()
+        .filter(Column::Username.eq(username))
+        .all(db)
+        .await?;
+
+    Ok(users.first().cloned())
+}
