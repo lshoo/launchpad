@@ -34,6 +34,10 @@ impl Settings {
 
         Ok(settings)
     }
+
+    pub fn db_url(&self) -> Option<String> {
+        self.database.url.clone()
+    }
 }
 
 #[derive(Debug, Clone, Default, Deserialize)]
