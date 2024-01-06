@@ -1,10 +1,9 @@
-use serde::{Deserialize, Serialize};
+pub mod signin;
+pub mod signup;
 
-#[derive(Debug, Deserialize, Serialize)]
-pub struct LoginResponse {
-    pub status: String,
-    pub token: String,
-}
+use serde::{Deserialize, Serialize};
+pub use signin::*;
+pub use signup::*;
 
 #[derive(Debug, Deserialize, Serialize)]
 pub struct TokenClaims {

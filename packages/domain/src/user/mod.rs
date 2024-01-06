@@ -1,5 +1,5 @@
 use chrono::naive::NaiveDateTime;
-use sea_orm::entity::prelude::*;
+use sea_orm::{entity::prelude::*, Set};
 use serde::{Deserialize, Serialize};
 
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, Deserialize)]
@@ -19,6 +19,25 @@ impl ActiveModelBehavior for ActiveModel {}
 #[derive(Copy, Clone, Debug, EnumIter, DeriveRelation)]
 pub enum Relation {}
 
+impl Model {
+    pub fn user_info(&self) -> UserInfo {
+        UserInfo {
+            id: self.id,
+            username: self.username.clone(),
+            created_at: self.created_at,
+            wallet: self.wallet.clone(),
+        }
+    }
+}
+
+#[derive(Debug, Deserialize, Serialize)]
+pub struct UserInfo {
+    pub id: i32,
+    pub username: String,
+    pub wallet: Option<String>,
+    pub created_at: NaiveDateTime,
+}
+
 pub async fn find_by_username(
     db: &DatabaseConnection,
     username: &str,
@@ -30,3 +49,26 @@ pub async fn find_by_username(
 
     Ok(users.first().cloned())
 }
+
+pub fn new_user_model(
+    username: String,
+    password: String,
+    created_at: NaiveDateTime,
+    wallet: Option<String>,
+) -> ActiveModel {
+    ActiveModel {
+        username: Set(username),
+        password: Set(password),
+        created_at: Set(created_at),
+        wallet: Set(wallet),
+        ..Default::default()
+    }
+}
+
+// let user = domain::user::ActiveModel {
+//     username: Set(payload.username),
+//     password: Set(payload.password),
+//     created_at: Set(chrono::Utc::now().naive_utc()),
+//     wallet: Set(payload.wallet),
+//     ..Default::default()
+// };

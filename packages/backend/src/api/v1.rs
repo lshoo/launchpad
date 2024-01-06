@@ -15,5 +15,12 @@ pub fn configure(state: Arc<ApplicationState>) -> Router {
             "/welcome",
             get(handlers::welcome::welcome).with_state(state.clone()),
         )
-        .route("/login", post(handlers::login::login).with_state(state))
+        .route(
+            "/login",
+            post(handlers::signin::login).with_state(state.clone()),
+        )
+        .route(
+            "/signup",
+            post(handlers::signup::register).with_state(state.clone()),
+        )
 }
