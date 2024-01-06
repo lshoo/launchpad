@@ -1,8 +1,9 @@
-use sea_orm::DatabaseConnection;
-
+pub mod assets;
 pub mod signin;
 pub mod signup;
 pub mod welcome;
+
+use sea_orm::DatabaseConnection;
 
 /// Check the username is valid, and does not exists
 pub async fn is_valid_username(db: &DatabaseConnection, username: &str) -> anyhow::Result<()> {

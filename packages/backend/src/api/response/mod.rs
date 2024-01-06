@@ -1,3 +1,4 @@
+pub mod assets;
 pub mod signin;
 pub mod signup;
 
